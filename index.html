@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>GIFT TO NADA 🎁</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fce4ec;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #contentWrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            z-index: 100; /* التأكد إن المحتوى فوق الكلمات */
+            background-color: rgba(252, 228, 236, 0.6);
+            padding: 20px;
+            border-radius: 30px;
+        }
+
+        #surpriseVideo {
+            display: none;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .gift-btn {
+            padding: 15px 35px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            z-index: 110;
+        }
+
+        #mainBtn { background-color: #ff4081; color: white; }
+        #replayBtn { 
+            background-color: #f48fb1; color: white; 
+            display: none; margin-top: 10px; font-size: 18px;
+        }
+
+        .gift-btn:hover { transform: scale(1.1); }
+
+        /* تنسيق الكلمات المتطايرة */
+        .floating-word {
+            position: absolute;
+            font-weight: bold;
+            user-select: none;
+            pointer-events: none;
+            animation: floatRandom infinite linear;
+            opacity: 0.7;
+        }
+
+        .love-style { color: #ff80ab; font-family: 'Courier New', monospace; }
+        .nada-style { color: #ec407a; font-family: 'Georgia', serif; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+
+        @keyframes floatRandom {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(var(--randX), var(--randY)) rotate(var(--randR)); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loveContainer"></div>
+    <div id="nadaContainer"></div>
+
+    <div id="contentWrapper">
+        <button id="mainBtn" class="gift-btn" onclick="revealSurprise()">
+            خذي وقتك، واضغطي على الزر 🎁
+        </button>
+
+        <video id="surpriseVideo" playsinline>
+            <source src="1000216271.mp4" type="video/mp4">
+        </video>
+
+        <button id="replayBtn" class="gift-btn" onclick="replayVideo()">
+            أعد المشاهدة 🔁
+        </button>
+    </div>
+
+    <audio id="yaySound" src="jesuschristisgod-children-saying-yay-praise-and-worship-jesus-299607.mp3"></audio>
+
+    <script>
+        // دالة عامة لإنشاء الكلمات المتطايرة
+        function generateWords(containerId, wordText, className, count) {
+            const container = document.getElementById(containerId);
+            for (let i = 0; i < count; i++) {
+                const span = document.createElement('span');
+                span.className = `floating-word ${className}`;
+                span.innerText = wordText;
+
+                const size = Math.random() * (35 - 16) + 16;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const duration = Math.random() * (12 - 6) + 6;
+                
+                const randX = (Math.random() - 0.5) * 300 + 'px';
+                const randY = (Math.random() - 0.5) * 300 + 'px';
+                const randR = (Math.random() - 0.5) * 1000 + 'deg';
+
+                span.style.fontSize = size + 'px';
+                span.style.left = posX + '%';
+                span.style.top = posY + '%';
+                span.style.animationDuration = duration + 's';
+                span.style.setProperty('--randX', randX);
+                span.style.setProperty('--randY', randY);
+                span.style.setProperty('--randR', randR);
+
+                container.appendChild(span);
+            }
+        }
+
+        // تشغيل كلمات Love عند البداية
+        window.onload = () => {
+            generateWords('loveContainer', 'love', 'love-style', 40);
+        };
+
+        function revealSurprise() {
+            const video = document.getElementById('surpriseVideo');
+            const sound = document.getElementById('yaySound');
+            const mainBtn = document.getElementById('mainBtn');
+            const replayBtn = document.getElementById('replayBtn');
+            
+            const loveContainer = document.getElementById('loveContainer');
+            const nadaContainer = document.getElementById('nadaContainer');
+
+            // 1. تبديل الكلمات (إخفاء Love وإظهار Nada)
+            loveContainer.style.display = 'none';
+            generateWords('nadaContainer', 'nada', 'nada-style', 45);
+
+            // 2. إخفاء الزر الرئيسي وإظهار الفيديو وزر الإعادة
+            mainBtn.style.display = 'none';
+            video.style.display = 'block';
+            replayBtn.style.display = 'flex';
+
+            // 3. تشغيل الميديا
+            video.play();
+            sound.play();
+        }
+
+        function replayVideo() {
+            const video = document.getElementById('surpriseVideo');
+            video.currentTime = 0;
+            video.play();
+        }
+    </script>
+</body>
+</html>
